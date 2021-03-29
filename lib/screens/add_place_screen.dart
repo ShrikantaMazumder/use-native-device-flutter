@@ -1,9 +1,36 @@
-import 'package:flutter/material.dart';
+import 'dart:io';
 
-class AddPlaceScreen extends StatelessWidget {
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:use_native_device_flutter/provider/places_provider.dart';
+import 'package:use_native_device_flutter/widgets/image_input.dart';
+
+class AddPlaceScreen extends StatefulWidget {
   static const routeName = "/add-place";
 
+  @override
+  _AddPlaceScreenState createState() => _AddPlaceScreenState();
+}
+
+class _AddPlaceScreenState extends State<AddPlaceScreen> {
   final _titleController = TextEditingController();
+
+  File _pickedImage;
+
+  _selectImage(File image) {
+    _pickedImage = image;
+  }
+
+  _submitAddPlaceForm() {
+    if (_titleController.text.isEmpty || _pickedImage == null) {
+      print("null");
+      return;
+    }
+    Provider.of<PlacesProvider>(context, listen: false)
+        .addPlace(_titleController.text, _pickedImage);
+    Navigator.of(context).pop();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,6 +58,10 @@ class AddPlaceScreen extends StatelessWidget {
                       ),
                       controller: _titleController,
                     ),
+                    SizedBox(height: 10),
+                    ImageInput(
+                      selectImage: _selectImage,
+                    ),
                   ],
                 ),
               ),
@@ -38,7 +69,7 @@ class AddPlaceScreen extends StatelessWidget {
           ),
           RaisedButton.icon(
             elevation: 0,
-            onPressed: () {},
+            onPressed: () => _submitAddPlaceForm(),
             icon: Icon(Icons.add),
             label: Text("Add Place"),
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
