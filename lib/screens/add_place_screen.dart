@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:use_native_device_flutter/provider/places_provider.dart';
 import 'package:use_native_device_flutter/widgets/image_input.dart';
+import 'package:use_native_device_flutter/widgets/location_input.dart';
 
 class AddPlaceScreen extends StatefulWidget {
   static const routeName = "/add-place";
@@ -62,6 +63,8 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
                     ImageInput(
                       selectImage: _selectImage,
                     ),
+                    SizedBox(height: 10),
+                    LocationInput(),
                   ],
                 ),
               ),
